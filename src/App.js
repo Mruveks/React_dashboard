@@ -12,17 +12,18 @@ import './App.css'
 
 const App = () => {
 
-    const {activeMenu} = useStateContext();
+    const {activeMenu , themeSettings, setThemeSettings, currentColor, currentMode} = useStateContext();
     
     return (
-        <div>
+        <div className={currentMode === 'Dark' ? 'dark' : ''}>
             <BrowserRouter>
                 <div className="flex relative dark:bg-main-bg">
                     <div className="fixed right-4 bottom-4" style={{zIndex: '1000'}}>
                         <TooltipComponent content="Settings" position="Top">
                             <button type="button" 
+                            onClick={() => setThemeSettings(true)}
                             className="text-3xl p-3 hover:drop-shadow-1xl hover:bg-light-gray text-white"
-                            style={{background: 'blue', borderRadius: '50%'}}>
+                            style={{background: currentColor, borderRadius: '50%'}}>
                                 <FiSettings />
                             </button>
                         </TooltipComponent>
@@ -39,7 +40,10 @@ const App = () => {
                     )}
 
                     <div className={
-                        `dark:bg-main-bg bg-main-bg  min-h-screen w-full ${activeMenu ? 'md:ml-72' : 'flex-2'}`
+                        `dark:bg-main-dark-bg bg-main-bg  min-h-screen w-full 
+                        ${activeMenu 
+                            ? 'md:ml-72' 
+                            : 'flex-2'}`
                     }>
                     
                     <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg Navbar w-full">
@@ -48,6 +52,9 @@ const App = () => {
                 
 
                     <div>
+
+                        {themeSettings && <ThemeSettings />}
+
                          <Routes>
                          {/* Dashboar */}
                              <Route path="/" element={<Ecommerce />} />
